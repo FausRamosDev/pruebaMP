@@ -13,22 +13,21 @@ $request_options = new RequestOptions();
 $request_options->setCustomHeaders(["X-Idempotency-Key: <SOME_UNIQUE_VALUE>"]);
 
 $payment = $client->create([
-  "transaction_amount" => (float) $_POST['transaction_amount'],  // Asegúrate de que los datos lleguen correctamente
-  "token" => $_POST['token'],  // Asegúrate de que el token de pago esté correcto
-  "description" => $_POST['description'],  // Descripción del producto o servicio
-  "installments" => $_POST['installments'],  // Cuotas seleccionadas
-  "payment_method_id" => $_POST['payment_method_id'],  // Método de pago seleccionado
-  "issuer_id" => $_POST['issuer_id'],  // ID del emisor del pago (opcional dependiendo del método de pago)
+  "transaction_amount" => (float) $_POST['transaction_amount'],  
+  "token" => $_POST['token'],  
+  "description" => $_POST['description'],  
+  "installments" => $_POST['installments'],  
+  "payment_method_id" => $_POST['payment_method_id'],  
+  "issuer_id" => $_POST['issuer_id'],  
   "payer" => [
-    "email" => $_POST['email'],  // Correo del pagador
+    "email" => $_POST['email'], 
     "identification" => [
-      "type" => $_POST['identification_type'],  // Tipo de documento
-      "number" => $_POST['identification_number']  // Número del documento
+      "type" => $_POST['identification_type'],  
+      "number" => $_POST['identification_number'] 
     ]
   ]
 ], $request_options);
 
-// Imprimir el pago para verificar la respuesta
 echo '<pre>';
 print_r($payment);
 echo '</pre>';
