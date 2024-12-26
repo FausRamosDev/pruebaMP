@@ -1,27 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="index.css">
     <script src="https://sdk.mercadopago.com/js/v2"></script>
-    <script src="index.js"></script>
 </head>
+
 <body>
-    <form id="form-checkout">
-        <div id="form-checkout__cardNumber" class="container"></div>
-        <div id="form-checkout__expirationDate" class="container"></div>
-        <div id="form-checkout__securityCode" class="container"></div>
-        <input type="text" id="form-checkout__cardholderName" />
-        <select id="form-checkout__issuer"></select>
-        <select id="form-checkout__installments"></select>
-        <select id="form-checkout__identificationType"></select>
-        <input type="text" id="form-checkout__identificationNumber" />
-        <input type="email" id="form-checkout__cardholderEmail" />
-    
-        <button type="submit" id="form-checkout__submit">Pagar</button>
-        <progress value="0" class="progress-bar">Cargando...</progress>
-      </form>
+    <div id="wallet_container"></div>
+    <script>
+        const mp = new MercadoPago('TEST-0c33c70f-f33c-48d2-a518-77ab14897baa', { locale: 'es-UY' });
+
+        fetch('http://localhost:3000/create-preference', { method: 'POST' })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Error en la solicitud: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Datos recibidos del backend:", data);
+                mp.bricks().create("wallet", "wallet_container", {
+                    initialization: {
+                        preferenceId: data.id,
+                    },
+                });
+            })
+            .catch(error => {
+                console.error("Error al obtener la preferencia:", error);
+            });
+
+    </script>
+    <script>
+        document.cookie = "SameSite=None; Secure";
+      </script>
 </body>
+
 </html>
